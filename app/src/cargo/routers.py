@@ -17,7 +17,6 @@ def get_cargo(
     cargo_id: int,
     db_session: Session = Depends(get_db),
 ) -> Any:
-
     result = cargo.get(db_session=db_session, id=cargo_id)
     if not result:
         raise HTTPException(
@@ -28,11 +27,14 @@ def get_cargo(
 
 
 @router.get("/", status_code=200, response_model=List[CargoList])
-def list_cargo(db_session: Session = Depends(get_db),
-               weight: Annotated[int, Query()] = None,
-               miles_to_cargo: Annotated[int, Query()] = 450,
-               ) -> List[CargoList]:
-    results = cargo.list(db_session=db_session, weight=weight, miles_to_cargo=miles_to_cargo)
+def list_cargo(
+    db_session: Session = Depends(get_db),
+    weight: Annotated[int, Query()] = None,
+    miles_to_cargo: Annotated[int, Query()] = 450,
+) -> List[CargoList]:
+    results = cargo.list(
+        db_session=db_session, weight=weight, miles_to_cargo=miles_to_cargo
+    )
     return results
 
 

@@ -10,13 +10,17 @@ file = "./uszips.csv"
 
 
 def read_file() -> List[LocationCreate]:
-    with open(file,'r', newline='') as csvfile:
+    with open(file, "r", newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         locations = []
         for row in reader:
-            location = LocationCreate(zip=row['zip'], lat=row['lat'],
-                                              lng=row['lng'], state_name=row['state_name'],
-                                              city=row['city'])
+            location = LocationCreate(
+                zip=row["zip"],
+                lat=row["lat"],
+                lng=row["lng"],
+                state_name=row["state_name"],
+                city=row["city"],
+            )
             locations.append(location)
         return locations
 

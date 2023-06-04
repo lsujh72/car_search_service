@@ -40,8 +40,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 raise e
         return db_obj
 
-    def update(self, db_session: Session, id: Any,
-               obj: Union[UpdateSchemaType, Dict[str, Any]]) -> Optional[ModelType]:
+    def update(
+        self, db_session: Session, id: Any, obj: Union[UpdateSchemaType, Dict[str, Any]]
+    ) -> Optional[ModelType]:
         db_obj: Optional[ModelType] = db_session.get(self.model, id)
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj, dict):

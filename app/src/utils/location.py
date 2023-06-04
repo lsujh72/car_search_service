@@ -13,8 +13,7 @@ def update_locations(db_session: Session) -> None:
     locations = db_session.execute(text(SQL_QUERY_RANDOM_LOCATION)).fetchmany(len(cars))
     update_data = []
     for car, location in zip(cars, locations):
-        update_data.append({'id': car.id,
-                            'location_current_id': location[0]})
+        update_data.append({"id": car.id, "location_current_id": location[0]})
 
     db_session.bulk_update_mappings(Car, update_data)
     db_session.commit()

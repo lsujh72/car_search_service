@@ -4,7 +4,6 @@ from src.db.base_class import Base
 
 
 class Location(Base):
-
     id = Column(Integer, primary_key=True, index=True)
     city = Column(String)
     state_name = Column(String)

@@ -4,9 +4,7 @@ from fastapi import FastAPI
 from src.cargo.routers import router as router_cargo
 from src.car.routers import router as router_car
 
-app = FastAPI(
-    title="Recipe API", openapi_url="/openapi.json"
-)
+app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
 
 
 app.include_router(router_cargo)
