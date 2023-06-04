@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14.6-alpine
+    env_file:
+      - app/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: sh -c "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    env_file:
+      - app/.env
+    depends_on:
+      - db
+
+  celery_beat:
+    build: .
+    restart: always
+    entrypoint: celery
+    command: -A src._celery.celery_app beat -l INFO
+    volumes:
+      - ./app:/app
+    env_file:
+      - app/.env
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  db:
+    driver: local
