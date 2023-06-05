@@ -14,7 +14,8 @@ class CargoCreate(CargoBase):
 
 
 class CargoUpdate(CargoBase):
-    pass
+    weight: int = Field(ge=1, le=1000, default=None)
+    description: str | None
 
 
 class CargoInDBBase(CargoBase):

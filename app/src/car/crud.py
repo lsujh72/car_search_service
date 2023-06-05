@@ -3,6 +3,8 @@ from typing import List, Union, Optional, Dict, Any
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from starlette import status
 
 from src.crud.base import CRUDBase, CreateSchemaType, ModelType, UpdateSchemaType
 from .schemas import CarCreate, CarUpdate
@@ -42,9 +44,15 @@ class CRUDCar(CRUDBase[Car, CarCreate, CarUpdate]):
         else:
             update_data = obj.dict(exclude_unset=True)
 
-        zip = update_data.pop("zip")
-        location_id = db_session.query(Location).filter_by(zip=zip).first().id
-        update_data.update({"location_current_id": location_id})
+        if zip := update_data.pop("zip", None):
+            try:
+                location_id = db_session.query(Location).filter_by(zip=zip).first().id
+                update_data.update({"location_current_id": location_id})
+            except Exception:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST, detail="Wrong zip"
+                )
+
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])

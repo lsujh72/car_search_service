@@ -17,6 +17,7 @@ celery_app.conf.beat_schedule = {
 
 celery_app.conf.timezone = "UTC"
 celery_app.conf.update(task_track_started=True)
+celery_app.autodiscover_tasks()
 
 
 @celery_app.task(bind=True)

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from .crud import car
 from .schemas import CarInDB, CarBase, CarUpdate
-from src.db.session import get_db
+from src.db.session import get_session
 
 
 router = APIRouter(prefix="/cars", tags=["Cars"])
@@ -15,19 +15,19 @@ router = APIRouter(prefix="/cars", tags=["Cars"])
 def create_car(
     *,
     new_car: CarBase,
-    db_session: Session = Depends(get_db),
+    db_session: Session = Depends(get_session),
 ) -> dict:
     result = car.create(db_session=db_session, obj_in=new_car)
 
     return result
 
 
-@router.put("/{car_id}", status_code=201, response_model=CarInDB)
-def update_cargo(
+@router.patch("/{car_id}", status_code=201, response_model=CarInDB)
+def update_car(
     *,
-    cargo_id: int,
+    car_id: int,
     update_car: CarUpdate,
-    db_session: Session = Depends(get_db),
+    db_session: Session = Depends(get_session),
 ) -> Any:
-    result = car.update(db_session=db_session, id=cargo_id, obj=update_car)
+    result = car.update(db_session=db_session, id=car_id, obj=update_car)
     return result

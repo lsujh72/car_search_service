@@ -11,7 +11,9 @@ class CarCreate(CarBase):
 
 
 class CarUpdate(CarBase):
-    zip: int
+    zip: int | None
+    carrying: int | None
+    unique_number: str = Field(regex=r"^\d{4}[A-Z]{1}$", default=None)
 
 
 class CarInDBBase(CarBase):

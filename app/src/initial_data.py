@@ -1,14 +1,14 @@
 import logging
 
 from src.db.init_db import init_db
-from src.db.session import SessionLocal
+from src.db.session import create_session
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 def init() -> None:
-    db_session = SessionLocal()
+    db_session = create_session()
     init_db(db_session)
 
 

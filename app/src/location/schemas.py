@@ -7,3 +7,7 @@ class LocationBase(BaseModel):
     zip: int
     lat: float
     lng: float
+
+
+class LocationCreate(LocationBase):
+    pass

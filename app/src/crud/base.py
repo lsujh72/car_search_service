@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from starlette import status
 
 from src.db.base_class import Base
 
@@ -35,7 +36,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         except sqlalchemy.ext.IntegrityError as e:
             db_session.rollback()
             if "duplicate key" in str(e):
-                raise HTTPException(status_code=409, detail="Conflict Error")
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT, detail="Conflict Error"
+                )
             else:
                 raise e
         return db_obj
@@ -60,6 +63,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db_obj
 
     def delete(self, db_session: Session, id: Any) -> None:
-        db_obj = db_session.query(self.model).get(id)
+        db_obj = db_session.get(self.model, id)
         db_session.delete(db_obj)
         db_session.commit()
