@@ -1,3 +1,5 @@
+https://docs.google.com/document/d/1EvGlcuyp7TpjpFUGFFi2WMSuhkljKSAeugJgcAgCceg/edit?usp=sharing
+
 ## Cloning & Run
 
 1. Clone the project on your PC
